@@ -71,7 +71,7 @@ try{
 
 
 const response = await fetch(
-'/api/admin/nominations',
+'/api/admin/nominations?time=' + Date.now(),
 {
 cache:'no-store'
 }
