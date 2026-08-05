@@ -1,21 +1,18 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
-
-// Force fresh data every request
 export const dynamic = 'force-dynamic';
-
 
 export async function GET() {
 
   try {
 
-
-    const { data, error } =
-      await supabaseAdmin
-        .from('nominations')
-        .select('status');
-
+    const { count, error } = await supabaseAdmin
+      .from('nominations')
+      .select('*', {
+        count: 'exact',
+        head: true
+      });
 
 
     if(error){
@@ -33,10 +30,30 @@ export async function GET() {
 
 
 
+    const { data, error: statusError } =
+      await supabaseAdmin
+        .from('nominations')
+        .select('status');
+
+
+    if(statusError){
+
+      return NextResponse.json(
+        {
+          error:statusError.message
+        },
+        {
+          status:400
+        }
+      );
+
+    }
+
+
+
     const stats = {
 
-      total: data?.length || 0,
-
+      total: count || 0,
 
       pending:
         data?.filter(
@@ -63,11 +80,10 @@ export async function GET() {
       stats,
       {
         headers:{
-          'Cache-Control':'no-store'
+          "Cache-Control":"no-store"
         }
       }
     );
-
 
 
   } catch(error:any){
