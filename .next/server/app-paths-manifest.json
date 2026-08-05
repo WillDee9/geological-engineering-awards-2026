@@ -1,0 +1,9 @@
+{
+  "/page": "app/page.js",
+  "/nominate/page": "app/nominate/page.js",
+  "/api/admin/stats/route": "app/api/admin/stats/route.js",
+  "/admin/nominations/page": "app/admin/nominations/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/api/admin/nominations/route": "app/api/admin/nominations/route.js",
+  "/api/admin/nominations/delete/route": "app/api/admin/nominations/delete/route.js"
+}
