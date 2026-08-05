@@ -2,18 +2,25 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
 
+// Prevent caching in production
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+
 
 async function generateNominationCode() {
-
 
   while (true) {
 
 
     const randomNumber =
-      Math.floor(100000 + Math.random() * 900000);
+      Math.floor(Math.random() * 1000)
+        .toString()
+        .padStart(3, '0');
 
 
-    const code = `AW26-${randomNumber}`;
+
+    const code = `GE${randomNumber}`;
 
 
 
@@ -26,17 +33,7 @@ async function generateNominationCode() {
 
 
 
-    if(error){
-
-      throw new Error(
-        "Unable to generate nomination code."
-      );
-
-    }
-
-
-
-    if(!data){
+    if (!data && !error) {
 
       return code;
 
@@ -45,8 +42,8 @@ async function generateNominationCode() {
 
   }
 
-
 }
+
 
 
 
@@ -71,12 +68,10 @@ export async function POST(
       );
 
 
-
     const nominator_phone =
       String(
         formData.get('nominator_phone') || ''
       );
-
 
 
     const nominee_name =
@@ -85,12 +80,10 @@ export async function POST(
       );
 
 
-
     const nominee_phone =
       String(
         formData.get('nominee_phone') || ''
       );
-
 
 
     const nominee_email =
@@ -141,7 +134,6 @@ export async function POST(
 
 
 
-
     const nomination_code =
       await generateNominationCode();
 
@@ -181,11 +173,11 @@ export async function POST(
 
 
 
+
       const {
         error:uploadError
       } =
-      await supabaseAdmin
-        .storage
+      await supabaseAdmin.storage
         .from('nominee-images')
         .upload(
           fileName,
@@ -217,12 +209,10 @@ export async function POST(
 
 
 
-
       const {
         data:urlData
       } =
-      supabaseAdmin
-        .storage
+      supabaseAdmin.storage
         .from('nominee-images')
         .getPublicUrl(
           fileName
@@ -234,9 +224,7 @@ export async function POST(
         urlData.publicUrl;
 
 
-
     }
-
 
 
 
@@ -294,6 +282,7 @@ export async function POST(
       );
 
 
+
       return NextResponse.json(
         {
           error:error.message
@@ -311,16 +300,29 @@ export async function POST(
 
 
 
+
     return NextResponse.json(
       {
+        ok:true,
+
         success:true,
+
         message:
-        "Nomination submitted successfully."
+        "Nomination submitted successfully.",
+
+        nomination_code:data.nomination_code
+
       },
       {
-        status:201
+        status:201,
+
+        headers:{
+          "Cache-Control":"no-store"
+        }
+
       }
     );
+
 
 
 
@@ -347,10 +349,13 @@ export async function POST(
         "Server error while submitting nomination."
       },
       {
-        status:500
+        status:500,
+
+        headers:{
+          "Cache-Control":"no-store"
+        }
       }
     );
-
 
 
   }
