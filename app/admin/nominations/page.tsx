@@ -469,9 +469,7 @@ error.message
 
 // DELETE NOMINATION
 
-async function deleteNomination(
-id:string
-){
+async function deleteNomination(id:string){
 
 
 const confirmDelete = confirm(
@@ -479,13 +477,9 @@ const confirmDelete = confirm(
 );
 
 
-
 if(!confirmDelete){
-
 return;
-
 }
-
 
 
 
@@ -495,20 +489,15 @@ try{
 const response = await fetch(
 '/api/admin/nominations/delete',
 {
-
 method:'POST',
-
 headers:{
 'Content-Type':'application/json'
 },
-
-
 body:JSON.stringify({
 id
-})
-
+}),
+cache:'no-store'
 }
-
 );
 
 
@@ -527,8 +516,13 @@ data.error || 'Delete failed'
 
 
 
+// REMOVE FROM SCREEN IMMEDIATELY
 
-await loadNominations();
+setNominations(prev =>
+prev.filter(
+item=>item.id !== id
+)
+);
 
 
 
