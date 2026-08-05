@@ -122,7 +122,13 @@ setLoading(false);
 useEffect(()=>{
 
 loadNominations();
+const interval = setInterval(
+loadNominations,
+10000
+);
 
+
+return ()=>clearInterval(interval);
 },[]);
 
 
@@ -522,13 +528,7 @@ data.error || 'Delete failed'
 
 
 
-setNominations(prev =>
-
-prev.filter(
-item => item.id !== id
-)
-
-);
+await loadNominations();
 
 
 
