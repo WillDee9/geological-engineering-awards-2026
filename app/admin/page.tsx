@@ -32,9 +32,9 @@ export default function AdminDashboard() {
      try{
 
       const response = await fetch(
-        '/api/admin/stats',
+        '/api/admin/stats?t=' + Date.now(),
         {
-          cache:'no-store'
+        cache:'no-store'
         }
       );
 
