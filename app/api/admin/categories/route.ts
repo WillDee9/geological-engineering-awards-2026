@@ -4,6 +4,12 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+console.log(
+    'SUPABASE URL:',
+    process.env.NEXT_PUBLIC_SUPABASE_URL
+);
+
+
 export async function GET() {
   const { data, error } =
     await supabaseAdmin
