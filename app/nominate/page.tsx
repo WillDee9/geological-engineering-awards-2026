@@ -111,66 +111,6 @@ export default function Nominate() {
 
 
 
-    const image =
-      form.get(
-        'nominee_image'
-      ) as File;
-
-
-
-
-    if(!image || image.size === 0){
-
-
-      setMessage(
-        'Please upload the nominee picture.'
-      );
-
-
-      setLoading(false);
-
-      return;
-
-    }
-
-
-
-
-
-    if(!image.type.startsWith('image/')){
-
-
-      setMessage(
-        'Only image files are allowed.'
-      );
-
-
-      setLoading(false);
-
-      return;
-
-    }
-
-
-
-
-
-    if(image.size > 5 * 1024 * 1024){
-
-
-      setMessage(
-        'Image size must be less than 5MB.'
-      );
-
-
-      setLoading(false);
-
-      return;
-
-    }
-
-
-
 
 
 
@@ -441,8 +381,6 @@ export default function Nominate() {
           name="nominee_image"
 
           accept="image/*"
-
-          required
 
           className="w-full rounded-lg border p-3"
 
