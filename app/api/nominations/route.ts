@@ -12,28 +12,28 @@ async function generateNominationCode() {
 
   while (true) {
 
-
     const randomNumber =
       Math.floor(Math.random() * 1000)
-        .toString()
-        .padStart(3, '0');
-
+      .toString()
+      .padStart(3, '0');
 
 
     const code = `GE${randomNumber}`;
 
 
-
-    const { data, error } =
+    const { data } =
       await supabaseAdmin
         .from('nominations')
         .select('id')
-        .eq('nomination_code', code)
+        .eq(
+          'nomination_code',
+          code
+        )
         .maybeSingle();
 
 
 
-    if (!data && !error) {
+    if (!data) {
 
       return code;
 
@@ -43,8 +43,6 @@ async function generateNominationCode() {
   }
 
 }
-
-
 
 
 
