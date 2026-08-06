@@ -1,4 +1,6 @@
+
 'use client';
+export const dynamic = 'force-dynamic';
 
 import { FormEvent, useEffect, useState } from 'react';
 
@@ -29,7 +31,10 @@ export default function Nominate() {
 
 
         const response = await fetch(
-          '/api/categories'
+          '/api/categories',
+          {
+            cache: 'no-store'
+          }
         );
 
 
