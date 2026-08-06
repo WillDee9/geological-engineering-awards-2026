@@ -29,12 +29,19 @@ if (!supabaseServiceKey) {
 
 
 
+console.log(
+  "SUPABASE CONNECTED TO:",
+  supabaseUrl
+);
+
+
+
 export const supabaseAdmin =
   createClient(
     supabaseUrl,
     supabaseServiceKey,
     {
-      auth: {
+      auth:{
         persistSession:false
       }
     }
