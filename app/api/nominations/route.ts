@@ -140,19 +140,19 @@ export async function POST(
 
 
     const image =
-      formData.get(
-        'nominee_image'
-      ) as File;
+      formData.get('nominee_image') as File | null;
 
 
-
-    let nominee_image_url = null;
+    let nominee_image_url =
+      '/placeholder.png';
 
 
 
 
-
-    if(image && image.size > 0){
+    if(
+      image &&
+      image.size > 0
+    ){
 
 
 
